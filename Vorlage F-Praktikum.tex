@@ -1,0 +1,205 @@
+% Vorlage zur Erstellung eines Praktikumsprotokolls
+% Version: 2017-10-05
+%
+% Diese Vorlage soll als Grundlage für die Erstellung eines Protokolls
+% im Rahmen des Praktikums (F-Praktikum Physik, TU Dresden) dienen.
+% Viele wichtige Pakete sind schon mit eingebunden, aber es können
+% auch noch weiter Pakete notwendig werden. Auf jedene Fall ist zu
+% beachten, dass dies keine offizielle Vorlage ist und somit auch
+% eine andere Form gewählt werden kann und evtl. auch von den
+% Betreuern erwartet wird.
+%
+% Erstellt wird das Dokument mit dem Befehl "pdflatex Protokoll", wenn
+% ihr das Dokument per Kommandozeile erstellen wollt. Ihr müsst euch dafür
+% im Verzeichnis des Protokolls befinden. Diejenigen, die mit einem
+% LaTeX-Editor schreiben, stellen als Compiler entsprechend PDFLaTeX ein.
+%
+% Bitte schaut auch mindest alle Stellen an, die mit TODO gekennzeichnet sind.
+%
+% Zusätzlich zur Präambel ist auch noch etwas Beispieltext mit angegeben. Der
+% die Verwendung einiger der etlichen Befehle zeigt.
+% Das Bibliographieverzeichnis ist manuell erstellt worden, was für ein
+% Praktikum meistens der weniger aufwändige Weg ist.
+% Für umfangreichere Verzeichnisse hilft es sich mit „biblatex“ vertraut zu
+% machen
+%
+% Die Vorlage kann *beliebig* weiterverwendet werden.
+% CC0 Henning Iseke <h_i_@online.de>
+%---------------------------------------------------------------------
+
+% -- Anfang Präambel
+\documentclass[german,  % Standardmäßig deutsche Eigenarten, englisch -> english
+parskip=full,  % Absätze durch Leerzeile trennen
+%bibliography=totoc,  % Literatur im Inhaltsverzeichnis (ist unüblich)
+%draft,  % TODO: Entwurfsmodus -> entfernen für endgültige Version
+]{scrartcl}
+\usepackage[utf8]{inputenc}  % Kodierung der Datei
+\usepackage[T1]{fontenc}  % Vollen Umfang der Schriftzeichen
+\usepackage[ngerman]{babel}  % Sprache auf Deutsch (neue Rechtschreibung)
+
+% Mathematik und Größen
+\usepackage{amsmath}
+\usepackage[locale=DE,  % deutsche Eigenarten, englisch -> US
+separate-uncertainty,  % Unsicherheiten seperat angeben (mit ±)
+]{siunitx}
+\usepackage{physics}  % Erstellung von Gleichungen vereinfachen
+
+\usepackage{graphicx}  % Bilder einbinden \includegraphics{Pfad/zur/Datei(ohne Dateiendung)}
+
+% Gestaltung
+%\usepackage{microtype}  % Mikrotypographie (kann man am Ende verwenden)
+\usepackage{booktabs}  % schönere Tabellen
+\usepackage[toc]{multitoc}  % mehrspaltiges Inhaltsverzeichnis
+\usepackage{csquotes}  % Anführungszeichen mit \enquote
+\usepackage{caption}  % Anpassung der Bildunterschriften, Tabellenüberschriften
+\usepackage{subcaption}  % Unterabbildungen, Untertabellen, …
+\usepackage{enumitem}  % Listen anpassen
+\setlist{itemsep=-10pt}  % Abstände zwischen Listenpunkten verringern
+
+% Manipulation des Seitenstils
+\usepackage{scrpage2}
+% Kopf-/Fußzeilen setzen
+\pagestyle{scrheadings}  % Stil für die Seite setzen
+\clearscrheadings  % Stil zurücksetzen, um ihn neu zu definieren
+\automark{section}  % Abschnittsnamen als Seitenbeschriftung verwenden
+\ofoot{\pagemark}  % Seitenzahl außen in Fußzeile
+\ihead{\headmark}  % Seitenbeschriftung mittig in Kopfzeile
+\setheadsepline{.5pt}  % Kopzeile durch Linie abtrennen
+
+\usepackage[hidelinks]{hyperref}  % Links und weitere PDF-Features
+
+% TODO: Titel und Autor, … festlegen
+\newcommand*{\titel}{<Titel des Versuchs>}
+\newcommand*{\autor}{<Autoren>}
+\newcommand*{\abk}{<Abkürzung des Versuchs>}
+\newcommand*{\betreuer}{<Betreuer>}
+\newcommand*{\messung}{<Datum>}
+\newcommand*{\ort}{<Ort>}
+
+\hypersetup{pdfauthor={\autor}, pdftitle={\titel}}  % PDF-Metadaten setzen
+
+% automatischen Titel konfigurieren
+\titlehead{F-Praktikum \abk \hfill TU Dresden}
+\subject{Versuchsprotokoll}
+\title{\titel}
+\author{\autor}
+\date{\begin{tabular}{ll}
+Protokoll: & \today\\
+Messung: & \messung\\
+Ort: & \ort\\
+Betreuer: & \betreuer\end{tabular}}
+
+% -- Ende Präambel
+
+\begin{document}
+\begin{titlepage}
+\maketitle  % Titel setzen
+\tableofcontents  % Inhaltsverzeichnis setzen
+\end{titlepage}
+
+% ----- BEISPIELTEXT ANFANG -----
+
+    \section{Einleitung}
+    Der Versuch hat das Ziel, sich mit der Dosimetrie vertraut zu machen.
+    Sie ist notwendig, da sich die Energieübertragung bei komplizierten
+    Versuchsaufbauten nur sehr aufwendig berechnen/simulieren lässt.
+    Insbesondere liefert sie eine wichtige Größe, um etwas über die durch
+    Wechselwirkung von Strahlung auf Materie übertragene Energie auszusagen.
+
+    Die Dosimetrie ist damit ein sehr wichtiger Teil vieler Versuche, die sich
+    mit Strahlung beschäftigen, auch um Gefährdungen zu minimieren bzw.
+    bestenfalls zu eliminieren.
+
+    \section{Theorie}
+    \subsection{A-Regeln}
+    Grundsätzlich gilt es natürlich die \enquote{A-Regeln}
+    \cite{wiki:Praktischer_Strahlenschutz} einzuhalten d.\,h.:
+    \begin{description}
+    \item[Aktivität] begrenzen
+    \item[Aufenthaltsdauer] minimieren
+    \item[Abstand] halten
+    \item[Abschirmung] verwenden
+    \item[Aufnahme] vermeiden
+    \item[Ausbildung] im Umgang mit Strahlung
+    \end{description}
+    denn dadurch lässt sich auf einfache Weise das Risiko beim Umgang mit
+    Strahlenquellen minimieren.
+
+    Um die Energieübertragung bzw. Belastungen für den menschlichen
+    Körper beim Umgang mit Strahlenquellen in Folge von Wechselwirkungen zu
+    quantifizieren gibt es drei wichtige Größen.
+
+    \subsection{Größen}
+    Die gemessene Größe ist die \textbf{Energiedosis}
+    %
+    \begin{equation}
+    D = \dv{E}{m},
+    \end{equation}
+    %
+    die in der
+    Einheit \textbf{Gray} ($\si{\gray} = \si{\joule\per\kg}$) angegeben wird.
+    Sie dient zur Angabe der Energie ($\mathrm{d}E$) die pro
+    Massenelement ($\mathrm{d}m$) an einem bestimmten Ort deponiert wird.
+    Über Wichtungsfaktoren für die Strahlungsart ($w_\mathrm{R}$) erhält man
+    die \textbf{Äquivalentdosis}
+    %
+    \begin{equation}
+    H_\mathrm{T} = w_\mathrm{R}\cdot D_\mathrm{T}
+    \end{equation}
+    %
+    für ein Organ $\mathrm{T}$, hierbei wird die unterschiedliche Wirkung der
+    verschiedenen Strahlungsarten berücksichtigt.
+
+    Die \textbf{effektive Dosis} ($H_\text{E}$),
+    die in der
+    Einheit \textbf{Sievert} ($\si{\sievert}=\si{\joule\per\kilogram}$)
+    angegeben wird, berechnet sich aus der Äquivalentdosis. Bei der Berechnung
+    wird neben der Art der Strahlung auch die Empfindlichkeit des bestrahlten
+    Organs mit einem Korrekturfaktor $w_\mathrm{T}$ mit berücksichtigt.
+    Schlussendlich lässt sich die effektive Dosis über
+    %
+    \begin{equation}
+    H_\mathrm{E}
+    = \sum\limits_\mathrm{T} w_\mathrm{T}\cdot w_\mathrm{R}\cdot D_\mathrm{T}
+    \end{equation}
+    %
+    berechnen, die Wichtungsfaktoren findet man u.\,a. in
+    \cite[Anlage VI]{strlschv}.
+    
+    \begin{figure}[htbp]
+    \centering
+    \fbox{
+    \begin{subfigure}{.45\textwidth}
+    \fbox{TEST1}
+    \caption{Test 1.}\label{fig:test1}
+    \end{subfigure}
+    }
+    \begin{subfigure}{.45\textwidth}
+    \fbox{TEST2}
+    \caption{Test 2.}\label{fig:test2}
+    \end{subfigure}
+    \caption{Test 1+2: \subref{fig:test1} und \subref{fig:test2}.}
+    \label{fig:test}
+    \end{figure}
+    
+    Es ist nicht wirklich interessant sich Abbildung~\ref{fig:test} anzuschauen,
+    da sich Unterabbildung~\ref{fig:test1} und \ref{fig:test2} nur marginal
+    unterscheiden.
+
+    % Bibliographie/Literaturverzeichnis
+    \begin{thebibliography}{9}
+    \bibitem{strlschv}
+    StrlSchV (2001),
+    \emph{Verordnung über den Schutz vor Schäden durch ionisierende Strahlen},
+    \url{http://www.gesetze-im-internet.de/strlschv_2001/index.html},
+    5.\,Nov.~2015.
+    \bibitem{wiki:Praktischer_Strahlenschutz}
+    Wikipedia,
+    \emph{Praktischer Strahlenschutz},
+    \url{https://de.wikipedia.org/wiki/Strahlenschutz#Praktischer_Strahlenschutz},
+    5.\,Nov.~2015.
+    \end{thebibliography}
+
+% ----- BEISPIELTEXT ENDE -----
+
+\end{document}
