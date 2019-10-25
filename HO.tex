@@ -1,0 +1,148 @@
+
+% -- Anfang Präambel
+\documentclass[german,  % Standardmäßig deutsche Eigenarten, englisch -> english
+parskip=full,  % Absätze durch Leerzeile trennen
+%bibliography=totoc,  % Literatur im Inhaltsverzeichnis (ist unüblich)
+%draft,  % TODO: Entwurfsmodus -> entfernen für endgültige Version
+]{scrartcl}
+\usepackage[utf8]{inputenc}  % Kodierung der Datei
+\usepackage[T1]{fontenc}  % Vollen Umfang der Schriftzeichen
+\usepackage[ngerman]{babel}  % Sprache auf Deutsch (neue Rechtschreibung)
+
+% Mathematik und Größen
+\usepackage{amsmath}
+\usepackage[locale=DE,  % deutsche Eigenarten, englisch -> US
+separate-uncertainty,  % Unsicherheiten seperat angeben (mit ±)
+]{siunitx}
+\usepackage{physics}  % Erstellung von Gleichungen vereinfachen
+
+\usepackage{graphicx}  % Bilder einbinden \includegraphics{Pfad/zur/Datei(ohne Dateiendung)}
+
+% Gestaltung
+%\usepackage{microtype}  % Mikrotypographie (kann man am Ende verwenden)
+\usepackage{booktabs}  % schönere Tabellen
+\usepackage[toc]{multitoc}  % mehrspaltiges Inhaltsverzeichnis
+\usepackage{csquotes}  % Anführungszeichen mit \enquote
+\usepackage{caption}  % Anpassung der Bildunterschriften, Tabellenüberschriften
+\usepackage{subcaption}  % Unterabbildungen, Untertabellen, …
+\usepackage{enumitem}  % Listen anpassen
+\setlist{itemsep=-10pt}  % Abstände zwischen Listenpunkten verringern
+
+% Manipulation des Seitenstils
+\usepackage{scrpage2}
+% Kopf-/Fußzeilen setzen
+\pagestyle{scrheadings}  % Stil für die Seite setzen
+\clearscrheadings  % Stil zurücksetzen, um ihn neu zu definieren
+\automark{section}  % Abschnittsnamen als Seitenbeschriftung verwenden
+\ofoot{\pagemark}  % Seitenzahl außen in Fußzeile
+\ihead{\headmark}  % Seitenbeschriftung mittig in Kopfzeile
+\setheadsepline{.5pt}  % Kopzeile durch Linie abtrennen
+
+\usepackage[hidelinks]{hyperref}  % Links und weitere PDF-Features
+
+% TODO: Titel und Autor, … festlegen
+\newcommand*{\titel}{Holographie}
+\newcommand*{\autor}{Tom Drechsler, Konstantin Schmid}
+\newcommand*{\abk}{HO}
+\newcommand*{\betreuer}{Karla Roszeitis}
+\newcommand*{\messung}{14.11.2019}
+\newcommand*{\ort}{<Ort>}
+
+\hypersetup{pdfauthor={\autor}, pdftitle={\titel}}  % PDF-Metadaten setzen
+
+% automatischen Titel konfigurieren
+\titlehead{Fortgeschrittenen-Praktikum \abk \hfill TU Dresden}
+\subject{Versuchsprotokoll}
+\title{\titel}
+\author{\autor}
+\date{\begin{tabular}{ll}
+Protokoll: & \today\\
+Messung: & \messung\\
+Ort: & \ort\\
+Betreuer: & \betreuer\end{tabular}}
+
+% -- Ende Präambel
+
+\begin{document}
+\begin{titlepage}
+\maketitle  % Titel setzen
+\tableofcontents  % Inhaltsverzeichnis
+\end{titlepage}
+
+% Text Anfang
+\section{Versuchsziel und Überblick}
+Der Versuch hat das Ziel, sich mit Komponenten und Arbeitstechniken in einem Laserlabor vertraut zu machen. 
+\newline Zuerst wird ein Michelson-Interferometer aufgebaut und Stabilität sowie Kohärenzlänge werden untersucht. Danach wird die Holographie-Anordnung für Weißlicht-Reflexionshologramme aufgebaut und schließlich das Hologramm aufgezeichnet, entwickelt und untersucht. Als Vorkenntnisse werden Elektrodynamik, Fourieranalyse und das Grundprinzip des Lasers benötigt, welche im Folgenden nochmal zusammengefasst sind.
+
+\section{Theoretische Grundlagen}
+\subsection{Das Grundprinzip der Holographie}
+Klassische Fotografie hat den Nachteil, dass bloß die Intensitätsverteilung reproduziert werden kann und so die Phaseninformation der einfallenden Wellen, wie beschrieben durch Gleichung (\ref{ÜberlagerungWelle}), verloren geht.
+\begin{align}
+\label{ÜberlagerungWelle} \vec{E}_1=\sum_{i}\vec{a}_i cos(\vec{k} \vec{r} - \omega t - \varphi_i)
+\end{align}
+In der Holographie wird das Lichtfeld des Objektes mit einer Referenzwelle überlagert und bei der Rekonstruktion des Lichtmusters wird das Hologramm wieder mit dieser Referenzwelle beleuchtet, sodass die rekonstruierte Welle in Phase und Amplitude der Originalwelle entspricht.
+
+\subsection{Mathematische Grundlagen und Definitionen}
+\subsubsection{Intensität elektromagnetischer Wellen}
+Die tatsächliche Intensität elektromagnetischer Strahlung ist ein Maß für die Energie pro Fläche und Zeitintervall. Im Allgemeinen wird die tatsächliche Intensität $I_t$ mit Hilfe des Poynting-Vektors $\vec{S}$ über die Gleichung (\ref{Poynting}) bestimmt.
+\begin{align}
+\label{Poynting} I_t=| \langle \vec{S} \rangle |
+\end{align}
+Dies vereinfacht sich in linearen Medien zu (\ref{LineareMedien})
+\begin{align}
+\label{LineareMedien} I_t(t)= \varepsilon_0 c n \vec{E}^2 \stackrel{n=1}{=} \varepsilon_0 c \vec{E}(t)^2
+\end{align}
+Durch zeitliche Mittelung ergibt sich der finale Ausdruck für die Intensität:
+\begin{align}
+\label{Intensität} I = \langle I_t \rangle = \lim\limits_{T \rightarrow \infty} \frac{1}{T} \int_{- \frac{T}{2}}^{\frac{T}{2}} I_t(t) dt = \varepsilon_0 c  \langle \vec{E}^2 \rangle
+\end{align}
+Durch eine Betrachtung im Raum der komplexen Zahlen kann das Betragsquadrat des elektrischen Feldstärkevektors umformuliert werden und (\ref{Intensität}) wird zu:
+\begin{align}
+\label{Intensität2} I = \frac{1}{2} \varepsilon_0 c \langle \hat{E} \hat{E^*} \rangle
+\end{align}
+wobei $\hat{E}$ die Amplitude des elektrischen Feldes und $\hat{E^*}$ das zugehörige komplex Konjugierte bezeichnen.
+
+\subsubsection{Die Fourierdarstellung}
+Das Fourierspektrum des reellen elektrischen Feldes ist definiert als:
+\begin{align}
+\label{Fourierspektrum} H(\omega) = \int_{- \infty}^{\infty}  E(t) e^{i\omega t}  dt, \omega \geq 0
+\end{align}
+Da allerdings für kontinuierliche Strahlung die Gesamtenergie divergiert, verwendet man stattdessen eine mittlere Leistung, wozu man einen zeitlichen Ausschnitt $E_T$ von $E(t)$ benötigt. Das dementsprechende Fourierspektrum $H_T(\omega)$ kann man analog über (\ref{Fourierspektrum}) ermitteln. Als Grenzwert findet man dann die spektrale Dichte S($\omega$) als Grenzwert:
+\begin{align}
+\label{SpektraleDichte} S(\omega)= \frac{1}{\pi} \lim\limits_{T \rightarrow \infty} \frac{|H_T(\omega)|^2}{T}
+\end{align}
+Mit dieser ist es möglich die mittlere Intensität als Integral über $S(\omega)$ auszudrücken:
+\begin{align}
+\label{Intensität3} I=\varepsilon_0 c \int_{0}^{\infty} S(\omega) d\omega
+\end{align}
+
+\subsubsection{Die Interferenz von Wellen}
+Als Ansatz betrachten wir 2 sich überlagernde ebene harmonische Wellen, gegeben durch (\ref{Welle})
+\begin{align}
+\label{Welle} \hat{E_i}=a_i e^{i(\vec{k}_i \vec{r} - \omega t - \varphi_i)}, i=1,2
+\end{align}
+Im Folgenden bezeichnet $\hat{E_{tot}}$ die Superposition der beiden einzelnen Amplituden.
+Die totale mittlere Intensität der beiden Wellen ist dann:
+\begin{align}
+\label{Intensität4} I_{tot}(\vec{r})=\frac{1}{2} \varepsilon_0 c \langle \hat{E_{tot}} \hat{{E_{tot}^*}} \rangle = 
+I_1 + I_2 + \sqrt{I_1 I_2}\cdot2\cdot cos(\phi(\vec{r})) \,\,mit\,\, \phi(\vec{r}) = (\vec{k}_1 - \vec{k}_2) \vec{r} - (\varphi_1 - \varphi_2)
+\end{align}
+
+\subsection{Kohärenz und Kontrastfunktion}
+
+
+
+
+
+    % Bibliographie/Literaturverzeichnis
+    \begin{thebibliography}{9}
+    \bibitem{wiki:Intensität}
+    Wikipedia,
+    \emph{Intensität (Physik)},
+    \url{https://de.wikipedia.org/wiki/Intensit%C3%A4t_(Physik)},
+    25.\,Okt.~2019.
+    \end{thebibliography}
+
+% Ende Dokument
+
+\end{document}
